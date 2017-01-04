@@ -70,6 +70,12 @@ class TestPilight(unittest.TestCase):
         """Setup things to be run when tests are started."""
         self.hass = get_test_home_assistant()
 
+    def tearDown(self):
+        try:
+            self.hass.block_till_done()
+        except RuntimeError:
+            pass
+
     @patch('homeassistant.components.pilight._LOGGER.error')
     def test_connection_failed_error(self, mock_error):
         """Try to connect at 127.0.0.1:5000 with socket error."""
