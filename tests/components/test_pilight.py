@@ -72,7 +72,8 @@ class TestPilight(unittest.TestCase):
 
     def tearDown(self):
         """Stop everything that was started."""
-        self.hass.stop()
+        if self.hass is not None:
+            self.hass.stop()
 
     @patch('homeassistant.components.pilight._LOGGER.error')
     def test_connection_failed_error(self, mock_error):
@@ -213,6 +214,7 @@ class TestPilight(unittest.TestCase):
 
             # Test stop
             self.hass.stop()
+            self.hass = None
             error_log_call = mock_pilight_error.call_args_list[-1]
             self.assertTrue(
                 'PilightDaemonSim stop' in str(error_log_call))
